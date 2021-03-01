@@ -1,0 +1,37 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Personal Administrativo") -%>
+<% block('titulo2', "Personal") -%>
+
+  <div class="card-header">
+    <h3 class="card-title"><a href="/personal/nuevo">Agregar
+    <i class="fas fa-plus"></i>
+</a>
+</div>
+  <form action="/personal/buscar" method="post">
+    <input type="text" name="buscar">
+    <input type="submit" value="buscar">
+  </form>
+    <table class="table table-striped">
+        <tr>
+           
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Ci o Nit</th>
+            <th>Rol</th>  
+            
+        </tr>
+        <%for(i=0;i<lista.length;i++){%>
+        <tr>
+            <td><%=lista[i].Nombre%></td>
+            <td><%=lista[i].Apellido_pat%></td>
+            <td><%=lista[i].Ci%></td>
+            <td><%=lista[i].Rol%></td>
+            <td><a href="/personal/detalle/<%= lista[i]._id %>">
+              <i class="fas fa-list"></i>
+          </a></td>
+            <td><a onclick="return confirm('esta seguro q quiere borrar')" href="/personal/borrar/<%=lista[i]._id%>"><i class="fas fa-trash"></i></a></td> 
+            <td><a href="/personal/edit/<%=lista[i]._id%>"><i class="fas fa-edit"></i></a> </td>
+        </tr>
+        <%}%>    
+    </table>
+    

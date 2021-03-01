@@ -1,0 +1,141 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Ventas") -%>
+
+<% block('script',
+`
+<script> $(document).ready(function() {
+  $('#cliente').select2({
+    ajax: {
+      url: '/api/cliente',
+      dataType: 'json',
+      data: function (params) {
+        var query = {
+          search: params.term,
+          type: 'public'
+        }
+        // Query parameters will be ?search=[term]&type=public
+        return query;
+      },
+      processResults: function (data) {
+        data.item.map(elem=>{
+          elem.id=elem._id;
+          elem.text=elem.nit+'/'+elem.cliente;
+        })
+
+        return {
+          results: data.item
+        };
+      }
+    }
+    }); 
+  }); </script>`) -%>
+<% block('titulo2', "Nuevo") -%>
+
+<script src="https://unpkg.com/hotkeys-js/dist/hotkeys.min.js"></script>
+
+<form action="/venta/nuevo" method="post">
+<div ng-app="super_venta" ng-controller="ventas">
+
+    <div style="color: red;">
+    <%=error%></div>
+    <select name="cliente" name="bbuscarcliente" style="width: 75%" id="cliente">
+        <option>Nit/ci</option>
+      </select>
+    <div  ng-init="iniciar('<%= msg %>');listaproducto =<%=JSON.stringify(listaproducto)%>">
+    <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Lista de productos</h3>
+        </div>
+    
+          <div class="row"> 
+              <div class="col-5">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Producto</label>
+                    <select class="form-control" id="prod"  
+                    ng-model="producto" 
+                    ng-options=" dato as dato.codigobarra  for dato in listaproducto track by dato._id" >
+                        <option ></option>
+                    </select>
+                        producto:{{producto.nombre}}
+                        <strong> cant:{{producto.cant|number:2}}</strong>
+                        precio
+                        {{producto.precio|number:2}}
+                        cantidad
+                  </div>
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Cantidad</label>
+                    <input  class="form-control" type="number" step="0.01" min="1" max="{{producto.cant}}"  ng-model="cant"  id="">
+                  </div>
+                  
+              </div>
+              <div class="col-2">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Importe</label>
+                  <strong class="form-control">{{cant*producto.precio|number:2}}Bs.</strong>
+                </div>
+                
+              </div>
+              <div class="col-3">
+                <button type="button"   ng-click="agregar()" >agregar</button>
+              </div>
+          </div>
+        
+        
+        
+        
+        
+        
+
+</div>
+        <div>
+            <table class="table table-bordere">
+                <tr>
+                    <th>producto</th>
+                    <th>precio</th>
+                    <th>cant</th>
+                    <th>importe</th>
+                </tr>
+                <tr ng-repeat="item in carrito" >
+                    <td>{{item.producto.nombre}}</td>
+                    <td>{{item.precio|number:2}}</td>
+                    <td>{{item.cant|number:2}}</td>
+                    <td>{{item.cant*item.precio|number:2}}</td>
+                    <td><button type="button" ng-click="confirmar(item)"  data-toggle="modal" data-target="#modal-default" ><i class="far fa-times-circle"></i></button> </td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+    <div>
+        total Bs.:{{total|number:2}}
+    </div>
+    <input type="hidden" name="detalle" ng-value="detalle_lista"   >
+    <input type="submit" value="realizar Venta">
+</form>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Confirmar Borrar</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Esta seguro de borrar el producto del carrito&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-primary" ng-click="confirmadoBorrar()"  data-dismiss="modal">Si</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+</div>
+

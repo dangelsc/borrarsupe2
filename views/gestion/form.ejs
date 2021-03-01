@@ -1,0 +1,109 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Ventas") -%>
+
+<% block('script',"") -%>
+<% block('titulo2', "Nuevo") -%>
+<div bgcolor="#7B91CF">
+        <%
+    var action='',boton='';
+    if(_id){
+        action='edit/'+_id;
+        boton='Editar';
+        %>Editar producto<%
+    }else
+    {
+        action='nuevo';
+        boton='Enviar';
+        %><center><h1>SUPERMERCADO</h1></center><%
+    }
+    %>
+
+    <h2> GESTION DE VENTAS</h2>
+   <form action="/gestion/<%=action%>" method="post">
+      
+      <h3>Recepcion de productos</h3>
+
+<table border="1">
+    <tr>
+
+        <th>
+            Tipo de producto
+        </th>
+
+        <th>
+            Nombre
+        </th>
+
+        <th>
+            Cantidad
+        </th>
+
+        <th>
+            Precio
+        </th>
+        <th>
+            Marca
+        </th>
+        <th>
+            Proveedor
+        </th>
+        <th>
+            Presentacion
+        </th>
+        <th>
+            Fecha de vencimiento
+        </th>
+    </tr>
+
+    <tr>
+        <td>
+            <select name="tipo">
+                <option>Abarrotes</option>
+                <option>Bebidas</option>
+                <option>Carnes</option>
+                <option>Dulces</option>
+                <option>Fiambres</option>
+                <option>Limpieza</option>
+                <option>Lacteos</option>
+                   <option></option>
+        </td>
+
+        <td>
+            <input type="text" name="nombre" id="nombre" value="<%=nombre%>" ><br><br>
+        </td>
+
+        <td>
+            <input type="number" name="cantidad" id="cantidad" value="<%=cantidad%>"  ><br><br>
+        </td>
+
+        <td>
+            <input type="number" name="precio" id="precio" value="<%=precio%>" ><br><br>
+
+        </td>
+
+        <td>
+            <input type="text" name="marca" id="marca" value="<%=marca%>"><br><br>
+        </td>
+
+        <td>
+            <input type="text" name="proveedor" id="proveedor" value="<%=proveedor%>"><br><br>
+        </td>
+
+        <td>
+            <input type="text" name="presentacion" id="presentacion" value="<%=presentacion%>" ><br><br>
+        </td>
+
+        <td>
+            <input type="date" name="vencimiento" id="vencimiento" >
+        </td>
+    </tr>
+
+
+</table>
+<br>
+<br>
+<div> 
+        <input type="submit" value="<%=boton%>">
+    
+    
+    </form>

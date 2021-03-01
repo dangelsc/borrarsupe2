@@ -1,0 +1,189 @@
+<% layout('../layout/templateLTE') -%>
+<% block('titulo1','Personal') -%>
+
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img class="profile-user-img img-fluid img-circle"
+                     src="/dist/img/avatar5.png"
+                     alt="User profile picture">
+              </div>
+
+              <h3 class="profile-username text-center">Nombre: <%=Nombre +' ' + Apellido_pat%></h3>
+
+              <p class="text-muted text-center">CI: <%= Ci%></p>
+
+             
+             
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          <!-- About Me Box -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title"><a href="/personal">Lista
+            
+            </a></h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <strong><i class="fas fa-book mr-1"></i> Education</strong>
+
+              <p class="text-muted">
+                B.S. in Computer Science from the University of Tennessee at Knoxville
+              </p>
+
+              <hr>
+
+              <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+
+              <p class="text-muted">Malibu, California</p>
+
+              <hr>
+
+              <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+
+              <p class="text-muted">
+                <span class="tag tag-danger">UI Design</span>
+                <span class="tag tag-success">Coding</span>
+                <span class="tag tag-info">Javascript</span>
+                <span class="tag tag-warning">PHP</span>
+                <span class="tag tag-primary">Node.js</span>
+              </p>
+
+              <hr>
+
+              <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
+
+              <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#detall" data-toggle="tab">Detalle</a></li>
+                <li class="nav-item"><a class="nav-link " href="#form" data-toggle="tab">Generar Reporte</a></li>
+                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Reportes</a></li>
+                
+              </ul>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content">
+                <div class="active tab-pane" id="detall">
+                    <!-- Post -->
+                    <div class="post">
+                      <h4> <strong>Nombre:</strong> <%=Nombre %>  <br></h4>
+                       <h4><strong>Apellido Paterno:</strong> <%=Apellido_pat %>  <br></h4>
+                       <h4><strong>Apellido Materno:</strong> <%=Apellido_mat %>  <br></h4>
+                       <h4><strong>Carnet de Identidad:</strong> <%=Ci %>  <br></h4>
+                       <h4><strong>Fecha de Nacimineto:</strong> <%=Fecha_nac.getDate() %>/
+                        <%=Fecha_nac.getMonth()+1%>/
+                        <%=Fecha_nac.getFullYear()%>  </strong><br></h4>
+                       <h4><strong>Genero:</strong> <%=Genero %>  <br></h4>
+                       <h4><strong>Celular:</strong> <%=Celular %>  <br></h4>
+                       <h4><strong>Rol:</strong> <%=Rol %>  <br>      </h4>       
+                    </div>
+                    <!-- /.post -->
+  
+                    
+                  </div>
+                <div class=" tab-pane" id="form">
+                  <!-- Post -->
+                  <div class="post">
+                    <form action="/personal/detalle/<%=_id%>" method="post">
+                        <div class="user-block">
+                     
+                            <h3>Reporte De:<%=Nombre +' ' + Apellido_pat%></h3>
+                            
+                        </div>
+                        <!-- /.user-block -->
+                        <p>
+                            Informe: <br>
+                            <textarea name="informe" id="" cols="60" rows="5"></textarea>
+                        </p>
+                        <p>Observaciones: <br>
+                            <textarea name="observaciones" id="" cols="60" rows="3"></textarea>
+                        </p>
+                        <input type="submit" value="Enviar">
+                    </form>                    
+                  </div>
+                  <!-- /.post -->
+
+                  
+                </div>
+                <!-- /.tab-pane -->
+                <div class="tab-pane" id="timeline">
+                  <!-- The timeline -->
+                  <div class="timeline timeline-inverse">
+                  <% for(i=0;i<detalle.length;i++){%>
+                    <!-- timeline time label -->
+                    <div class="time-label">
+                      <span class="bg-danger">
+                        <% let fecha= new Date(detalle[i].fecha) %>
+                        <%=fecha.getDate()%>/
+                        <%=fecha.getMonth()+1%>/
+                        <%=fecha.getFullYear()%>
+                      </span>
+                    </div>
+                    <!-- /.timeline-label -->
+                  
+                    <!-- timeline item -->
+                    <div>
+                      <i class="fas fa-user bg-info"></i>
+
+                      <div class="timeline-item">
+                        <span class="time"><i class="far fa-clock"></i> <%=fecha.getHours()%>:<%=fecha.getMinutes()%>:<%=fecha.getSeconds()%></span>
+
+                        <h3 class="timeline-header border-0">
+                            <br>
+                            <strong>Informe:</strong>
+                            <br>
+                            <a href="#"><%=detalle[i].informe%></a> 
+                            <br>
+                            <strong>Observaciones:</strong>
+                            <br>
+                             <%=detalle[i].observaciones%>
+                            <br> <br>
+                            <form action="/personal/detalle" method="post">
+                             
+                              <input type="submit" name="pdf" value="pdf">
+                          </form> 
+                            
+                        </h3>
+                      </div>
+                    </div>
+                    <!-- END timeline item -->
+                    <%}%>
+                    <div>
+                      <i class="far fa-clock bg-gray"></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.tab-pane -->
+
+               
+                <!-- /.tab-pane -->
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>

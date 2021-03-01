@@ -1,0 +1,54 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Personal Administrativo") -%>
+<% block('titulo2', "Personal") -%>
+<%
+    var action='',boton='';
+    if(_id){
+        action='edit/'+_id;
+        boton='Editar'
+        %>Nuevo Persona<%
+    }else
+    {
+        action='nuevo';
+        boton='Registrar';
+        %>Nuevo Persona<%
+    }
+    %>
+    <br>
+    <div class="container">
+    <form action="/personal/<%=action%>" method="post">
+    Nombre: <input type="text" name="Nombre" value="<%=Nombre%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Nombre']?error.errors['Nombre'].message:''%>
+    </div><br>
+    Apellido Paterno: <input type="text" name="Apellido_pat" value="<%=Apellido_pat%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Apellido_pat']?error.errors['Apellido_pat'].message:''%>
+    </div><br>
+    Apellido Materno: <input type="text" name="Apellido_mat" value="<%=Apellido_mat%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Apellido_mat']?error.errors['Apellido_mat'].message:''%>
+    </div><br>
+    Ci: <input type="text" name="Ci" value="<%=Ci%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Ci']?error.errors['Ci'].message:''%>
+    </div><br>
+    Fecha de Nacimineto: <input type="date" name="Fecha_nac" value="<%=Fecha_nac%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Fecha_nac']?error.errors['Fecha_nac'].message:''%>
+    </div><br>
+    Genero: <input type="text" name="Genero" value="<%=Genero%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Genero']?error.errors['Genero'].message:''%>
+    </div><br>
+    Celular: <input type="number" name="Celular" value="<%=Celular%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Celular']?error.errors['Celular'].message:''%>
+    </div><br>
+    Rol: <input type="text" name="Rol" value="<%=Rol%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    <div style="color: brown;">
+        <%=error && error.errors['Rol']?error.errors['Rol'].message:''%>
+    </div><br>
+    <input type="submit" value="<%=boton%>">
+    </form>
+</div>

@@ -1,0 +1,40 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Control de cliente") -%>
+
+<% block('script',"") -%>
+<% block('titulo2', "Lista de Clientes Existentes ") -%>
+
+
+<a href="/control/nuevo/"  >Agregar <i class="fas fa-plus-circle"></i></i></a>
+<form action="/control/buscar" method="post">
+    <input type="text" name="buscar">
+    
+    <input type="submit" value="buscar" >
+    
+</form>
+<table class="table">
+    <tr>
+            <th>ci</th>
+            <th>nombre</th>
+            <th>ape_pat</th>
+            <th>ape_mat</th>
+            <th>direccion</th>
+            <th>telefono</th>
+   </tr>
+   <% for(i=0;i<lista.length;i++){%>
+   <tr >
+       
+    <td><%=lista[i].ci%></td>
+    <td><%=lista[i].nombre%></td>
+    <td><%=lista[i].ape_pat%></td>
+    <td><%=lista[i].ape_mat%></td>
+    <td><%=lista[i].direccion%></td>
+    <td><%=lista[i].telefono%></td>
+   </tr>
+   <td><a onclick="return confirm('Esta seguro de borrar los datos de cliente')" href="/control/borrar/<%=lista[i]._id%>"><i class="fas fa-times-circle"></i></class></a></td>
+            <td><a href="/control/edit/<%=lista[i]._id%>"><i class="fas fa-edit"></i></a></td>
+            </tr>
+   <% } %>
+</table>
+
+

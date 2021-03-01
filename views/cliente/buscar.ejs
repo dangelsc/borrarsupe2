@@ -1,0 +1,25 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Cliente") -%>
+
+<% block('script',"") -%>
+<% block('titulo2', "Lista") -%>
+
+ususario conectado: <%= user.nombre %>
+
+<form action="/cliente/buscar" method="post">
+    <input type="text" name="buscar">
+    <input type="submit" value="buscar">
+</form>
+<table class="table">
+    <tr>
+        <th>cliente</th>
+        <th>Nit/ci</th>
+   </tr>
+   <% for(i=0;i<listacliente.length;i++){%>
+   <tr >
+       
+       <td><%= listacliente[i].cliente%> </td>
+       <td><%= listacliente[i].nit%> </td>
+   </tr>
+   <% } %>
+</table>

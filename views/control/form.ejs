@@ -1,0 +1,60 @@
+<% layout('../layout/templateLTE') %>
+<% block('titulo1', "Agregar nuevo Cliente") -%>
+
+<% block('script',"") -%>
+<% block('titulo2', "Registro de Clientes") -%>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<div><body>
+        <%
+    var action='',boton='';
+    if(_id){
+        action='edit/'+_id;
+        boton='Editar';
+        %>Editar cliente<%
+    }else
+    {
+        action='nuevo';
+        boton='Enviar';
+        %><h1>Agregar Datos del Cliente</h1><%
+    }
+    %>
+    <style>
+        label{
+            display: block;
+            float: left;
+            width: 90px;
+
+        }
+    </style>
+    
+   <form action="/control/<%=action%>" method="POST">
+      <br><br>
+      
+          <tr>
+           <label>Ci</label><input type="number" name="ci"  value="<%=ci%>" id="ci">
+           <br><br>
+           <label>Nombre</label><input type="text"  name="nombre"  value="<%=nombre%>" id="nombre">
+            <br><br>
+           <label> Ap_Paterno</label><input type="text" name="ape_pat"   value="<%=ape_pat%>" id="ape_pat">
+           <br><br>
+           <label>Ap_Materno</label><input type="text" name="ape_mat"   value="<%=ape_mat%>" id="ape_mat">
+           <br><br>
+           <label>Direccion</label><input type="text" name="direccion"  value="<%=direccion%>" id="direccion">
+           <br><br>
+           <label>Telefono</label><input type="number" name="telefono"  value="<%=telefono%>" id="telefono">
+           <br><br>
+        </tr>
+        <input type="submit" value="<%=boton%>">
+    
+    </form>
+</div>
+</body>
+</html>
