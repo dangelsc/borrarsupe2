@@ -1,31 +1,22 @@
 <% layout('../layout/templateLTE') %>
-<% block('titulo1', "Ventas") -%>
+<% block('titulo1', "GESTION DE PRODUCTOS") -%>
 
 <% block('script',"") -%>
-<% block('titulo2', "Nuevo") -%>
-<a href="/gestion/nuevo/">Agregar Nuevo Producto</a>
-
-
+<% block('titulo2', "LISTA DE LOS PRODUCTOS") -%>
+<a href="/gestion/nuevo/">Agregar nuevo producto + </a>
 
 
    <center><h1>Datos recibidos de la recepcion de los productos</h1></center>
     <br><br>
-    Buscar <input type="text" name="buscar" value="" id="">
-
    
-    
+
     <div style="text-align:center;">
-    <table >
+    <table class="table">
         <tr>
-            <th>Tipo</th>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Marca</th>
-            <th>Proveedor</th>
-            <th>Presentacion</th>
+            <th>Tipo</th> <th>Nombre</th> <th>Cantidad</th> <th>Precio</th>
+            <th>Marca</th> <th>Proveedor</th> <th>Presentacion</th>
             <th>Vencimiento</th>
-            <th></th>
+            
         </tr>
         <% for(i=0;i<lista.length;i++){%>
         <tr>
@@ -38,11 +29,10 @@
             <td><%=lista[i].presentacion%></td>
             <td><%=lista[i].vencimiento%></td>
 
-            <td><a onclick="return confirm('Esta seguro de borrar los datos de la recepcion de los productos?')" href="/gestion/borrar/<%=lista[i]._id%>">borrar_producto</a></td>
+            <td><a onclick="return confirm('Esta seguro de borrar los datos de la recepcion de los productos?')" href="/gestion/borrar/<%=lista[i]._id%>">BORRAR<i class="fas fa-times-circle"></i></a></td>
             <td>
-               
-                <a type="button" href="/gestion/edit/<%=lista[i]._id%>">editar_producto</a>
-                
+    
+                <a type="button" href="/gestion/edit/<%=lista[i]._id%>">EDITAR<i class="fas fa-edit"></i></a> 
             </td>
             </tr>
         <%}%>
