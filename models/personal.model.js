@@ -9,10 +9,13 @@ const schema = new mongoose.Schema(
         Fecha_nac:{type:Date,required:[true,'Es necesario']},
         Genero:{type:String,required:[true,'Es necesario']},
         Celular:{type:Number,required:[true,'Es necesario']},
-        Rol:{type:String,required:[true,'Es necesario']},
+        Rol:{type:mongoose.Schema.Types.ObjectId,ref:'roles',required:[true,'Es necesario']},
         estado:Boolean,
+        login:{type:String},
+        password:{type:String},
         creadoPor:{type:mongoose.Schema.Types.ObjectId,ref:'user'},
-        modificadoPor:{type:mongoose.Schema.Types.ObjectId,ref:'user'},
+        modificadoPor:{type:mongoose.Schema.Types.ObjectId,
+            ref:'user'},
         detalle:[
             {
                 fecha:Date,

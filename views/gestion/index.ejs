@@ -27,7 +27,11 @@
             <td><%=lista[i].marca%></td>
             <td><%=lista[i].proveedor%></td>
             <td><%=lista[i].presentacion%></td>
-            <td><%=lista[i].vencimiento%></td>
+            <td><%
+                let fecha = new Date(lista[i].vencimiento);
+
+                %>
+            <%=fecha.toLocaleDateString("es-ES")%></td>
 
             <td><a onclick="return confirm('Esta seguro de borrar los datos de la recepcion de los productos?')" href="/gestion/borrar/<%=lista[i]._id%>">BORRAR<i class="fas fa-times-circle"></i></a></td>
             <td>

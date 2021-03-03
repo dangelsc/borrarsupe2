@@ -7,7 +7,7 @@ var logger = require('morgan');
 
 var session = require('express-session');
 
-var User=require('./models/user.model.js');
+var User=require('./models/personal.model.js');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -48,13 +48,15 @@ var bcrypt = require('bcrypt');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    User.findOne({ login: username }, function (err, user) {
+    User.findOne({ login: username })
+        .populate('Rol')
+        .exec(function (err, user) {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
       console.log(bcrypt.hashSync(password,10));
-      //if (!user.validPassword(password)) {
+      console.log("password=",password,user.password);
       if(!bcrypt.compareSync(password,user.password)){
         return done(null, false, { message: 'Incorrect password.' });
       }
@@ -68,7 +70,9 @@ passport.serializeUser(function(user, cb) {
 });
 
 passport.deserializeUser(function(id, cb) {
-  User.findById(id, function (err, user) {
+  User.findById(id)
+  .populate('Rol')
+  .exec(function (err, user) {
     if (err) { return cb(err); }
     cb(null, user);
   });

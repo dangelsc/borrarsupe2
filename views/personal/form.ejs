@@ -45,7 +45,15 @@
     <div style="color: brown;">
         <%=error && error.errors['Celular']?error.errors['Celular'].message:''%>
     </div><br>
-    Rol: <input type="text" name="Rol" value="<%=Rol%>" id="" class="form-control my-colorpicker1 colorpicker-element">
+    Rol: 
+        <select name="Rol" id="">
+            <% for(i=0;i<listaRoles.length;i++){%>
+            <option value="<%=listaRoles[i]._id%>" 
+                <% if(listaRoles[i]._id.equals(Rol)){%>
+                    selected<%}%> 
+                ><%=listaRoles[i].nombre%></option>
+            <%}%>
+        </select>
     <div style="color: brown;">
         <%=error && error.errors['Rol']?error.errors['Rol'].message:''%>
     </div><br>

@@ -1,17 +1,26 @@
 var Personal = require("../models/personal.model");
 var Informes= require('./informe.personal/informe');
+var Roles= require('../models/roles.model');
 var tabla='personal';
-indexPersonal = function(req,res,next){
-    Personal.find({estado:1},(err,lista)=>{
+indexPersonal = async function(req,res,next){
+    
+    Personal
+    .find({estado:1})
+    .populate('Rol')
+    .exec((err,lista)=>{
         if(err)
             return res.render('./'+tabla+'/indexPersonal',{lista:[],error:err});
-            return res.render('./'+tabla+'/indexPersonal',{lista:lista,error:null});
+        console.log(lista);
+        return res.render('./'+tabla+'/indexPersonal',{lista:lista,error:null});
 
     });
     
 }
 indexUser = function(req,res,next){
-    Personal.find({estado:1},(err,lista)=>{
+    Personal.find({estado:true})
+    .populate('Rol')
+    .exec((err,lista)=>{
+    
         if(err)
             return res.render('./'+tabla+'/index',{lista:[],error:err});
         else
@@ -20,30 +29,36 @@ indexUser = function(req,res,next){
     });
    
 }
-nuevo = function(req,res,next){
+nuevo = async function(req,res,next){
+    let listaRoles=await Roles.find({estado:1});
     let aux= new Personal();
     aux._id=null;
     aux.error=null;
+    aux.listaRoles=listaRoles;
+    console.log(aux.listaRoles)
     aux.Nombre=aux.Apellido_pat=aux.Apellido_mat=aux.Ci=aux.Genero=aux.Rol='';
-    return res.render('./'+tabla+'/form',aux);
+    return res.render('./'+tabla+'/form',aux,);
 }
-nuevoPost=function(req,res,next){
+nuevoPost=async function(req,res,next){
     req.body.creadoPor=req.user._id;
     req.body.modificadoPor=req.user._id;
     let nuevo = new Personal(req.body);
     nuevo.estado=1;
+    let listaRoles=await Roles.find({estado:1});
   
     nuevo.save((err,dato)=>{
         if(err)
         {
             nuevo.error=err;
             nuevo._id=null;
+            nuevo.listaRoles=listaRoles;
             res.render('./'+tabla+'/form',nuevo);
         }
         if(dato)
             return res.redirect('/'+tabla);
         else{
             nuevo.error='Paso algo';
+            nuevo.listaRoles=listaRoles;
             res.render('./'+tabla+'/form',nuevo);
         }
         
@@ -51,23 +66,27 @@ nuevoPost=function(req,res,next){
     });
     
 }
-edit= function(req,res,next){
+edit= async function(req,res,next){
+    let listaRoles=await Roles.find({estado:1});
     Personal.findById(req.params.id,(err,dato)=>{
         if(err)
             return res.redirect('/'+tabla);
         else{
             dato.error=null;
+            dato.listaRoles=listaRoles;
             res.render('./'+tabla+'/form',dato);
         }
     })
 }
-editPost =function(req,res,next){
+editPost =async function(req,res,next){
     req.body.modificadoPor=req.user._id;
+    let listaRoles=await Roles.find({estado:1});
     let validar=new Personal(req.body);
     if(err=validar.validateSync()){
         validar._id=null;
         validar.error=err;
         validar.Fecha_nac;
+        validar.listaRoles=listaRoles;
         return res.render('./'+tabla+'/form',validar);
     }
     //req.body.userMod=req.user._id;
@@ -75,6 +94,7 @@ editPost =function(req,res,next){
         if(err){
             req.body.error=err;
             //req.body._id=req.params.id;
+            req.body.listaRoles=listaRoles;
             res.render('./'+tabla+'/form',req.body);
         }
         return res.redirect('/'+tabla);
