@@ -1,6 +1,8 @@
 var Personal = require("../models/personal.model");
 var Informes= require('./informe.personal/informe');
 var Roles= require('../models/roles.model');
+var bcrypt = require('bcrypt');
+//const { catch } = require("../config/conexion");
 var tabla='personal';
 indexPersonal = async function(req,res,next){
     
@@ -44,27 +46,68 @@ nuevoPost=async function(req,res,next){
     req.body.modificadoPor=req.user._id;
     let nuevo = new Personal(req.body);
     nuevo.estado=1;
+    nuevo.password=bcrypt.hashSync(req.body.password,10);
     let listaRoles=await Roles.find({estado:1});
-  
-    nuevo.save((err,dato)=>{
-        if(err)
-        {
+
+    if (!req.files  || Object.keys(req.files ).length === 0) {
+        nuevo.avatar='default.jpg';
+        nuevo.save((err,dato)=>{
+            if(err)
+            {
+                nuevo.error=err;
+                nuevo._id=null;
+                nuevo.listaRoles=listaRoles;
+                return res.render('./'+tabla+'/form',nuevo);
+            }
+            if(dato)
+                return res.redirect('/'+tabla);
+            else{
+                nuevo.error='Paso algo';
+                nuevo.listaRoles=listaRoles;
+                return  res.render('./'+tabla+'/form',nuevo);
+            }
+            
+                
+        });
+      }
+    else{
+    sampleFile = req.files.avatar;
+    uploadPath = __dirname + '\\..\\public\\avatar\\' + nuevo._id+".jpg";
+      
+        console.log("archivo");
+        console.log("path",uploadPath);
+        // Use the mv() method to place the file somewhere on your server
+        sampleFile.mv(uploadPath, function(err) {
+
+          if (err){
+            console.log("archivo2", err);
             nuevo.error=err;
             nuevo._id=null;
             nuevo.listaRoles=listaRoles;
-            res.render('./'+tabla+'/form',nuevo);
-        }
-        if(dato)
-            return res.redirect('/'+tabla);
-        else{
-            nuevo.error='Paso algo';
-            nuevo.listaRoles=listaRoles;
-            res.render('./'+tabla+'/form',nuevo);
-        }
-        
+            return  res.render('./'+tabla+'/form',nuevo);
+          }
+        nuevo.avatar=nuevo._id+".jpg";
+        nuevo.save((err,dato)=>{
+            if(err)
+            {
+                nuevo.error=err;
+                nuevo._id=null;
+                nuevo.listaRoles=listaRoles;
+                return res.render('./'+tabla+'/form',nuevo);
+            }
+            if(dato)
+                return res.redirect('/'+tabla);
+            else{
+                nuevo.error='Paso algo';
+                nuevo.listaRoles=listaRoles;
+                return res.render('./'+tabla+'/form',nuevo);
+            }
             
-    });
-    
+                
+        });
+
+        });
+    }
 }
 edit= async function(req,res,next){
     let listaRoles=await Roles.find({estado:1});
@@ -89,6 +132,32 @@ editPost =async function(req,res,next){
         validar.listaRoles=listaRoles;
         return res.render('./'+tabla+'/form',validar);
     }
+    if (req.files  && Object.keys(req.files ).length >= 0) {
+        sampleFile = req.files.avatar;
+        uploadPath = __dirname + '\\..\\public\\avatar\\' + req.params.id+".jpg";
+      
+        console.log("archivo");
+        console.log("path",uploadPath);
+        try{
+        // Use the mv() method to place the file somewhere on your server
+        let file= await sampleFile.mv(uploadPath)/*, function(err) {
+
+          if (err){
+            console.log("archivo2", err);
+            nuevo.error=err;
+            nuevo._id=null;
+            nuevo.listaRoles=listaRoles;
+            return  res.render('./'+tabla+'/form',nuevo);
+          }*/
+        }catch(err){
+            nuevo.error=err;
+            nuevo._id=null;
+            nuevo.listaRoles=listaRoles;
+            return  res.render('./'+tabla+'/form',nuevo);
+        }
+          req.body.avatar=req.params.id+".jpg";
+    }
+        //req.body.avatar=req.params.id+".jpg";
     //req.body.userMod=req.user._id;
     Personal.findByIdAndUpdate(req.params.id,req.body,(err,dato)=>{
         if(err){

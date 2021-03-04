@@ -13,6 +13,7 @@ const schema = new mongoose.Schema(
         estado:Boolean,
         login:{type:String},
         password:{type:String},
+        avatar:String,
         creadoPor:{type:mongoose.Schema.Types.ObjectId,ref:'user'},
         modificadoPor:{type:mongoose.Schema.Types.ObjectId,
             ref:'user'},

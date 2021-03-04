@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+const fileUpload = require('express-fileupload');
 
 var session = require('express-session');
 
@@ -20,6 +20,9 @@ var personalRouter = require('./routes/personal')
 
 var app = express();
 
+app.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 },
+}));
 app.engine('ejs', require('ejs-locals'));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -55,7 +58,7 @@ passport.use(new LocalStrategy(
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      console.log(bcrypt.hashSync(password,10));
+      
       console.log("password=",password,user.password);
       if(!bcrypt.compareSync(password,user.password)){
         return done(null, false, { message: 'Incorrect password.' });
