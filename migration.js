@@ -19,3 +19,13 @@ let p=new Personal({
     Rol:rol1._id
 });
 p.save();
+
+/*calculo
+    2*5+2= x
+resultado del sistema
+    x
+resultado esperado
+    15
+match
+    x==15
+*/

@@ -14,7 +14,6 @@ router.post('/buscar',auth,control.buscar);
 router.get('/borrar/:id',auth,control.borrar);
 router.get('/detalle/:id',auth,control.detalleForm);
 router.post('/detalle/:id',auth,control.detalle);
-
-
+router.get('/reportePerfil/:id',auth,control.reportePerfil);
 
 module.exports = router;

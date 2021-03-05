@@ -2,13 +2,14 @@ var Personal = require("../models/personal.model");
 var Informes= require('./informe.personal/informe');
 var Roles= require('../models/roles.model');
 var bcrypt = require('bcrypt');
+
 //const { catch } = require("../config/conexion");
 var tabla='personal';
 indexPersonal = async function(req,res,next){
     
     Personal
     .find({estado:1})
-    .populate('Rol')
+    //.populate('Rol')
     .exec((err,lista)=>{
         if(err)
             return res.render('./'+tabla+'/indexPersonal',{lista:[],error:err});
@@ -243,7 +244,17 @@ detalle=function(req,res){
     
   
 }
+reportePerfil=async function(req,res){
+    let doc="Perfil.pdf";
+    try{
+        let p=await Personal.findById(req.params.id);
 
+        Informes.perfil(p,doc,res);
+    }
+    catch(err){
+
+    }
+}
 module.exports={
     indexPersonal:indexPersonal,
     index:indexUser,
@@ -254,6 +265,7 @@ module.exports={
     borrar:borrar,
     detalleForm:detalleForm,
     detalle:detalle,
-    buscar:buscar
+    buscar:buscar,
+    reportePerfil:reportePerfil
     
 }
