@@ -23,11 +23,9 @@ module.exports=(req,res,next)=>{
             return res.redirect('/venta/nuevo');
         }
         else if(req.user.Rol.nombre==="Gerente"){
-            res.locals.menu=[{
-                titulo:'Venta',
-                url:'/venta/nuevo',
-                icon:'nav-icon fas fa-th'
-            },{
+            //rbac
+            res.locals.menu=[
+                {
                 titulo:'Personal',
                 url:'/personal',
                 icon:'nav-icon fas fa-chart-pie'
